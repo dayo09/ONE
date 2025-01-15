@@ -53,7 +53,6 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
   constant->rank(node->rank());
   constant->shape_status(luci::ShapeStatus::VALID);
 
-  uint32_t node_size = node->size<loco::DataType::FLOAT32>();
   uint32_t constant_size = 1;
   for (uint32_t i = 0; i < successor->rank(); ++i)
   {
@@ -65,6 +64,7 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
   auto const node_data = &node->at<loco::DataType::FLOAT32>(0);
   auto const constant_data = &constant->at<loco::DataType::FLOAT32>(0);
 
+  assert(successor->rank() > 1);
   if (successor->rank() == 2)
   {
     auto const N = successor->dim(successor->rank() - 2).value();
